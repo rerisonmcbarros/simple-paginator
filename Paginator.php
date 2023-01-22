@@ -48,6 +48,11 @@ class Paginator{
 
 	public function setNumberLinks($number){
 
+		if($number == $this->numberPages){
+
+			$this->numberLinks = $this->numberPages;
+		}
+
 		$this->numberLinks = $number;
 	}
 
@@ -59,7 +64,7 @@ class Paginator{
 		$start = $this->currentPage-$linksAround;
 		$end = $this->currentPage+$linksAround;
 
-		if($start < 1){
+		if($start <= 1){
 
 			$start = 1;
 			$end = $start + ($linksAround*2);
@@ -84,7 +89,11 @@ class Paginator{
 			}
 			else{
 
-				$templateLinks.= "<a class=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$i}\">{$i}</a>";
+				if($i >= 1 && $i <= $end ){
+
+					$templateLinks.= "<a class=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$i}\">{$i}</a>";
+
+				}	
 			}
 			
 		}

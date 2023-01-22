@@ -26,7 +26,7 @@
 
 	$paginator->setData($result);
 
-	$paginator->setNumberLinks(5);
+	$paginator->setNumberLinks(10);
 
 	$results = $paginator->resultFromPage();
 
