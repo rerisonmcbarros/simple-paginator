@@ -7,6 +7,8 @@ class Paginator{
 	private $limit;
 	private $ofsset;
 
+	private $numberPages;
+
 	private $data;
 
 	public function __construct(string $url, $limit, $offset = 0){
@@ -24,6 +26,18 @@ class Paginator{
 			$this->data[] = $value;
 		}
 
+		$this->setNumberPages();
+
+	}
+
+	public function setNumberPages(){
+
+		if(count($this->data) <= $this->limit){
+
+			$this->numberPages = 1;
+		}
+
+		$this->numberPages = ceil(count($this->data)/$this->limit);
 	}
 
 }
@@ -41,7 +55,7 @@ $stmt->execute();
 
 $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-$paginator = new Paginator("url", 10, 1);
+$paginator = new Paginator("url", 5, 1);
 
 $paginator->setData($result);
 
