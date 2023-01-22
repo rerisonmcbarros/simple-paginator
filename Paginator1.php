@@ -3,7 +3,7 @@
 
 class Paginator{
 
-	private const STYLE_LINKS = "pagination-item";
+	private const STYLE_LINKS = "page-link";
 	private $url;
 	private $limit;
 	private $ofsset;
@@ -74,22 +74,22 @@ class Paginator{
 
 		$templateLinks = '';
 
-		$templateLinks.= "<a style=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$this->previousPage()}\"><<</a>";
+		$templateLinks.= "<a class=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$this->previousPage()}\"><<</a>";
 
 		for($i=$start; $i<=$end; $i++){
 
 			if($i == $this->currentPage){
 
-				$templateLinks.= "<span style=\"".self::STYLE_LINKS." active \" href=\"{$this->url}/?page={$i}\">{$i}</span>";
+				$templateLinks.= "<span class=\"".self::STYLE_LINKS." active \" href=\"{$this->url}/?page={$i}\">{$i}</span>";
 			}
 			else{
 
-				$templateLinks.= "<a style=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$i}\">{$i}</a>";
+				$templateLinks.= "<a class=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$i}\">{$i}</a>";
 			}
 			
 		}
 
-		$templateLinks.= "<a style=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$this->nextPage()}\">>></a>";
+		$templateLinks.= "<a class=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$this->nextPage()}\">>></a>";
 
 		return $templateLinks;
 	}
@@ -97,9 +97,10 @@ class Paginator{
 
 	public function setCurrentPage(){
 
+
 		$currentPage = filter_input(INPUT_GET, 'page');
 
-		$this->currentPage = $currentPage;
+		$this->currentPage = $currentPage ?? 1;
 	}
 
 	public function nextPage(){
@@ -125,7 +126,7 @@ class Paginator{
 	}
 
 
-	public function resultsFromPage(){
+	public function resultFromPage(){
 
 		foreach($this->data as $key => $value){
 
@@ -144,24 +145,4 @@ class Paginator{
 
 
 
-// TESTES //
-
-
-$pdo = new \PDO("mysql:host=localhost;port=3306;dbname=users", "root", "");
-
-$stmt = $pdo->prepare("select * from users");
-
-$stmt->execute();
-
-$result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-$paginator = new Paginator("/Paginator/Paginator1.php", 5);
-
-$paginator->setData($result);
-
-$paginator->setNumberLinks(5);
-
-echo $paginator->links();
-
-$results = $paginator->resultsFromPage();
 
