@@ -48,7 +48,7 @@ class Paginator{
 
 	public function setNumberLinks($number){
 
-		if($number == $this->numberPages){
+		if($number >= $this->numberPages){
 
 			$this->numberLinks = $this->numberPages;
 		}
