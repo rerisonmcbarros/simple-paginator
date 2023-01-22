@@ -124,6 +124,22 @@ class Paginator{
 
 	}
 
+
+	public function resultsFromPage(){
+
+		foreach($this->data as $key => $value){
+
+			if(
+				$key < (($this->currentPage*$this->limit)) 
+				&&
+				$key >= (($this->currentPage*$this->limit)-$this->limit) 
+			){
+
+				yield $value;
+			}
+		}
+	}
+
 }
 
 
@@ -139,7 +155,7 @@ $stmt->execute();
 
 $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-$paginator = new Paginator("/Paginator/Paginator1.php", 5, 1);
+$paginator = new Paginator("/Paginator/Paginator1.php", 5);
 
 $paginator->setData($result);
 
@@ -147,5 +163,5 @@ $paginator->setNumberLinks(5);
 
 echo $paginator->links();
 
+$results = $paginator->resultsFromPage();
 
-echo "<pre>", var_dump($paginator), "</pre>";
