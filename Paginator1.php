@@ -8,6 +8,7 @@ class Paginator{
 	private $ofsset;
 
 	private $numberPages;
+	private $numberLinks;
 
 	private $data;
 
@@ -40,6 +41,12 @@ class Paginator{
 		$this->numberPages = ceil(count($this->data)/$this->limit);
 	}
 
+
+	public function setNumberLinks($number){
+
+		$this->numberLinks = $number;
+	}
+
 }
 
 
@@ -58,5 +65,7 @@ $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 $paginator = new Paginator("url", 5, 1);
 
 $paginator->setData($result);
+
+$paginator->setNumberLinks(5);
 
 echo "<pre>", var_dump($paginator), "</pre>";
