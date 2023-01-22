@@ -3,6 +3,7 @@
 
 class Paginator{
 
+	private const STYLE_LINKS = "pagination-item";
 	private $url;
 	private $limit;
 	private $ofsset;
@@ -73,18 +74,22 @@ class Paginator{
 
 		$templateLinks = '';
 
+		$templateLinks.= "<a style=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$this->previousPage()}\"><<</a>";
+
 		for($i=$start; $i<=$end; $i++){
 
 			if($i == $this->currentPage){
 
-				$templateLinks.= "<span href=\"{$this->url}/?page={$i}\">{$i}</span>";
+				$templateLinks.= "<span style=\"".self::STYLE_LINKS." active \" href=\"{$this->url}/?page={$i}\">{$i}</span>";
 			}
 			else{
 
-				$templateLinks.= "<a href=\"{$this->url}/?page={$i}\">{$i}</a>";
+				$templateLinks.= "<a style=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$i}\">{$i}</a>";
 			}
 			
 		}
+
+		$templateLinks.= "<a style=\"".self::STYLE_LINKS."\" href=\"{$this->url}/?page={$this->nextPage()}\">>></a>";
 
 		return $templateLinks;
 	}
@@ -95,6 +100,28 @@ class Paginator{
 		$currentPage = filter_input(INPUT_GET, 'page');
 
 		$this->currentPage = $currentPage;
+	}
+
+	public function nextPage(){
+
+		if($this->currentPage >= $this->numberPages){
+
+			return $this->currentPage;
+		}
+
+		return ($this->currentPage+1);
+
+	}
+
+	public function previousPage(){
+
+		if($this->currentPage <= 1){
+
+			return $this->currentPage;
+		}
+
+		return ($this->currentPage-1);
+
 	}
 
 }
